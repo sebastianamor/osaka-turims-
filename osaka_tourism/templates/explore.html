@@ -1,0 +1,417 @@
+{% extends "base.html" %}
+{% block title %}Explore Osaka{% endblock %}
+{% block extra_head %}
+<style>
+.lang-bar { position: sticky; top: 64px; z-index: 90; }
+.page-hero {
+  background: var(--ink);
+  padding: 3rem 2rem;
+  text-align: center;
+  border-bottom: 3px solid var(--gold);
+}
+.page-hero h1 {
+  font-family: 'Shippori Mincho', serif;
+  color: white; font-size: 2.2rem; font-weight: 300;
+  letter-spacing: 0.1em; margin-bottom: 0.5rem;
+}
+.page-hero p { color: rgba(255,255,255,0.6); font-size: 0.9rem; letter-spacing: 0.08em; }
+.filter-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+  position: sticky; top: calc(64px + 36px); z-index: 89;
+}
+.filter-btn {
+  padding: 0.35rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+.filter-btn.active { background: var(--red); color: white; border-color: var(--red); }
+.explore-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 0;
+  min-height: 600px;
+}
+.places-grid {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  align-content: start;
+}
+.place-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.place-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+.place-card.hidden { display: none; }
+.place-img {
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+  background: var(--paper-dark);
+  position: relative;
+  overflow: hidden;
+}
+.place-fav {
+  position: absolute; top: 10px; right: 10px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+.place-fav:hover { background: var(--red-light); }
+.place-fav.active { background: var(--red-light); border-color: var(--red); }
+.place-body { padding: 1.2rem; }
+.place-cat {
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.4rem;
+}
+.place-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--ink);
+}
+.place-desc { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+.place-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--border);
+}
+.place-rating { font-size: 0.8rem; color: var(--gold); }
+.place-review-btn {
+  font-size: 0.75rem; color: var(--red); cursor: pointer;
+  border: none; background: none; padding: 0;
+  text-decoration: underline;
+}
+.map-panel {
+  border-left: 1px solid var(--border);
+  position: sticky;
+  top: calc(64px + 36px + 54px);
+  height: calc(100vh - 64px - 36px - 54px);
+  display: flex; flex-direction: column;
+}
+.map-panel h3 {
+  padding: 1rem 1.5rem;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1rem; color: var(--ink);
+  border-bottom: 1px solid var(--border);
+  background: var(--gold-light);
+}
+#map { flex: 1; }
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(26,18,8,0.7);
+  align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 2px;
+  width: 100%; max-width: 500px;
+  max-height: 80vh; overflow-y: auto;
+}
+.modal-header {
+  padding: 1.5rem;
+  background: var(--ink);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h3 { color: white; font-family: 'Shippori Mincho', serif; font-size: 1.2rem; }
+.modal-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+.modal-body { padding: 1.5rem; }
+.stars { display: flex; gap: 4px; margin: 1rem 0; }
+.star {
+  font-size: 1.5rem; cursor: pointer; color: var(--border);
+  transition: color 0.1s;
+}
+.star.lit { color: var(--gold); }
+textarea.review-input {
+  width: 100%; padding: 0.8rem; border: 1px solid var(--border);
+  border-radius: 2px; font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.9rem; resize: vertical; min-height: 100px;
+  outline: none; color: var(--ink); background: var(--paper);
+}
+.review-list { margin-top: 1.5rem; }
+.review-item {
+  padding: 1rem 0; border-bottom: 1px solid var(--border);
+}
+.review-item:last-child { border-bottom: none; }
+.review-user { font-size: 0.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; }
+.review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.4rem; }
+.review-comment { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+{% endblock %}
+{% block content %}
+<div class="lang-bar">
+  <span data-lang="en" onclick="setLang('en')">English</span>
+  <span data-lang="es" onclick="setLang('es')">Español</span>
+  <span data-lang="zh" onclick="setLang('zh')">中文</span>
+</div>
+<div class="page-hero">
+  <h1 data-en="Explore Osaka" data-es="Explorar Osaka" data-zh="探索大阪">Explore Osaka</h1>
+  <p data-en="Discover the best spots in the city" data-es="Descubre los mejores lugares de la ciudad" data-zh="发现城市最佳景点">Discover the best spots in the city</p>
+</div>
+<div class="filter-bar">
+  <button class="filter-btn active" data-cat="all" onclick="filterCat('all')" data-en="All" data-es="Todos" data-zh="全部">All</button>
+  <button class="filter-btn" data-cat="historic" onclick="filterCat('historic')" data-en="Historic" data-es="Histórico" data-zh="历史">Historic</button>
+  <button class="filter-btn" data-cat="park" onclick="filterCat('park')" data-en="Parks" data-es="Parques" data-zh="公园">Parks</button>
+  <button class="filter-btn" data-cat="food" onclick="filterCat('food')" data-en="Food" data-es="Gastronomía" data-zh="美食">Food</button>
+  <button class="filter-btn" data-cat="shopping" onclick="filterCat('shopping')" data-en="Shopping" data-es="Compras" data-zh="购物">Shopping</button>
+  <button class="filter-btn" data-cat="hotel" onclick="filterCat('hotel')" data-en="Hotels" data-es="Hoteles" data-zh="酒店">Hotels</button>
+  <button class="filter-btn" data-cat="night" onclick="filterCat('night')" data-en="Nightlife" data-es="Vida Nocturna" data-zh="夜生活">Nightlife</button>
+   <button class="filter-btn" data-cat="night" onclick="filterCat('night')" data-en="Nightlife" data-es="Vida Nocturna" data-zh="夜生活">Nightlife</button> <!-- Esto es un comentario -->
+</div>
+
+<div class="explore-layout">
+  <div class="places-grid" id="placesGrid"></div>
+  <div class="map-panel">
+    <h3 data-en="Map of Osaka" data-es="Mapa de Osaka" data-zh="大阪地图">Map of Osaka</h3>
+    <div id="map"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Reviews</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.85rem;color:var(--ink-soft);margin-bottom:0.5rem;" data-en="Write a review:" data-es="Escribe una reseña:" data-zh="写评论：">Write a review:</p>
+      <div class="stars" id="starPicker">
+        <span class="star" data-v="1" onclick="setStar(1)">★</span>
+        <span class="star" data-v="2" onclick="setStar(2)">★</span>
+        <span class="star" data-v="3" onclick="setStar(3)">★</span>
+        <span class="star" data-v="4" onclick="setStar(4)">★</span>
+        <span class="star" data-v="5" onclick="setStar(5)">★</span>
+      </div>
+      <textarea class="review-input" id="reviewText" placeholder="Share your experience..."></textarea>
+      <button class="btn btn-red" style="width:100%;margin-top:0.5rem;" onclick="submitReview()" data-en="Submit Review" data-es="Enviar Reseña" data-zh="提交评论">Submit Review</button>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const PLACES = [
+  { id:'osaka_castle', cat:'historic', emoji:'🏯', lat:34.6873, lng:135.5262, rating:'4.8',
+    en:{name:'Osaka Castle', cat:'Historic Site', desc:'The iconic 16th-century castle rebuilt in 1931. Tower museum, moat and cherry blossom park.'},
+    es:{name:'Castillo de Osaka', cat:'Sitio Histórico', desc:'El icónico castillo del siglo XVI reconstruido en 1931. Museo, foso y parque de cerezos.'},
+    zh:{name:'大阪城', cat:'历史遗址', desc:'标志性的16世纪城堡，1931年重建。城堡博物馆、护城河和樱花公园。'}},
+  { id:'dotonbori', cat:'food', emoji:'🦑', lat:34.6687, lng:135.5013, rating:'4.7',
+    en:{name:'Dotonbori', cat:'Food & Nightlife', desc:'Osaka\'s most famous street food district with glittering signs, takoyaki and ramen.'},
+    es:{name:'Dotonbori', cat:'Gastronomía y Vida Nocturna', desc:'El distrito gastronómico más famoso de Osaka con letreros brillantes, takoyaki y ramen.'},
+    zh:{name:'道顿堀', cat:'美食与夜生活', desc:'大阪最著名的街头美食区，璀璨霓虹灯、章鱼烧和拉面。'}},
+  { id:'shinsekai', cat:'historic', emoji:'🗼', lat:34.6519, lng:135.5063, rating:'4.5',
+    en:{name:'Shinsekai', cat:'Historic District', desc:'Retro 1910s district with the Tsutenkaku Tower. Kushikatsu heaven and old-school atmosphere.'},
+    es:{name:'Shinsekai', cat:'Barrio Histórico', desc:'Barrio retro de 1910 con la Torre Tsutenkaku. Paraíso del kushikatsu y atmósfera vintage.'},
+    zh:{name:'新世界', cat:'历史街区', desc:'1910年代复古街区，通天阁耸立其中，串炸天堂，老派氛围浓郁。'}},
+  { id:'umeda', cat:'shopping', emoji:'🛍️', lat:34.7024, lng:135.4959, rating:'4.6',
+    en:{name:'Umeda Sky Building', cat:'Shopping & Views', desc:'Futuristic twin towers with a "floating garden" observatory offering panoramic city views.'},
+    es:{name:'Umeda Sky Building', cat:'Compras y Vistas', desc:'Torres gemelas futuristas con un observatorio de "jardín flotante" con vistas panorámicas.'},
+    zh:{name:'梅田空中庭院', cat:'购物与观景', desc:'未来感十足的双子塔，顶部"空中花园"观景台俯瞰城市全景。'}},
+  { id:'namba', cat:'shopping', emoji:'🏪', lat:34.6645, lng:135.5010, rating:'4.5',
+    en:{name:'Namba', cat:'Shopping District', desc:'Osaka\'s busiest shopping area with Den-den Town, Namba Parks and hundreds of restaurants.'},
+    es:{name:'Namba', cat:'Zona de Compras', desc:'La zona comercial más concurrida de Osaka con Den-den Town, Namba Parks y cientos de restaurantes.'},
+    zh:{name:'难波', cat:'购物区', desc:'大阪最繁华的购物区，含电电城、难波公园及数百家餐厅。'}},
+  { id:'sumiyoshi', cat:'historic', emoji:'⛩️', lat:34.6136, lng:135.4930, rating:'4.7',
+    en:{name:'Sumiyoshi Grand Shrine', cat:'Shinto Shrine', desc:'One of Japan\'s oldest shrines (211 AD). Unique Sumiyoshi architectural style with arched bridge.'},
+    es:{name:'Gran Santuario Sumiyoshi', cat:'Santuario Sintoísta', desc:'Uno de los santuarios más antiguos de Japón (211 d.C.). Estilo arquitectónico único con puente arqueado.'},
+    zh:{name:'住吉大社', cat:'神道神社', desc:'日本最古老的神社之一（公元211年），独特的住吉建筑风格与拱桥。'}},
+  { id:'tennoji', cat:'park', emoji:'🦁', lat:34.6519, lng:135.5065, rating:'4.6',
+    en:{name:'Tennoji Zoo & Park', cat:'Park', desc:'Over 1,000 animals in one of Japan\'s oldest zoos, surrounded by a scenic public park.'},
+    es:{name:'Zoo y Parque Tennoji', cat:'Parque', desc:'Más de 1.000 animales en uno de los zoológicos más antiguos de Japón, rodeado de un hermoso parque.'},
+    zh:{name:'天王寺动物园和公园', cat:'公园', desc:'日本最古老的动物园之一，拥有1000多种动物，周围环绕美丽公园。'}},
+  { id:'kuromon', cat:'food', emoji:'🐟', lat:34.6681, lng:135.5068, rating:'4.7',
+    en:{name:'Kuromon Market', cat:'Food Market', desc:'Osaka\'s kitchen since 1902. Over 180 stalls with fresh seafood, fruits, meats and street food.'},
+    es:{name:'Mercado Kuromon', cat:'Mercado de Alimentos', desc:'La cocina de Osaka desde 1902. Más de 180 puestos con pescado fresco, frutas, carnes y comida callejera.'},
+    zh:{name:'黑门市场', cat:'食品市场', desc:'自1902年起的大阪厨房，180多个摊位提供新鲜海鲜、水果、肉类和街头小食。'}},
+  { id:'hotel_granvia', cat:'hotel', emoji:'🏨', lat:34.7026, lng:135.4962, rating:'4.6',
+    en:{name:'Hotel Granvia Osaka', cat:'Hotel ★★★★★', desc:'Luxury hotel directly connected to JR Osaka Station. Stunning views and world-class service.'},
+    es:{name:'Hotel Granvia Osaka', cat:'Hotel ★★★★★', desc:'Hotel de lujo directamente conectado a la estación JR Osaka. Vistas impresionantes y servicio de clase mundial.'},
+    zh:{name:'大阪格兰比亚酒店', cat:'酒店 ★★★★★', desc:'直连JR大阪站的豪华酒店，壮观视野和世界级服务。'}},
+  { id:'namba_parks', cat:'shopping', emoji:'🌿', lat:34.6627, lng:135.4990, rating:'4.5',
+    en:{name:'Namba Parks', cat:'Shopping & Garden', desc:'Unique shopping mall with rooftop canyon garden, 9 floors of retail and dining over park terraces.'},
+    es:{name:'Namba Parks', cat:'Centro Comercial', desc:'Centro comercial único con jardín de cañón en la azotea, 9 pisos de tiendas y restaurantes.'},
+    zh:{name:'难波公园', cat:'购物与花园', desc:'独特的购物中心，屋顶峡谷花园，9层零售和餐饮，俯瞰公园梯田。'}},
+  { id:'abeno', cat:'night', emoji:'🌃', lat:34.6461, lng:135.5136, rating:'4.6',
+    en:{name:'Abeno Harukas', cat:'Observatory & Night Views', desc:'Japan\'s tallest skyscraper at 300m. Sky terrace with breathtaking panoramic night views of Osaka.'},
+    es:{name:'Abeno Harukas', cat:'Observatorio', desc:'El rascacielos más alto de Japón con 300m. Terraza con vistas nocturnas panorámicas de Osaka.'},
+    zh:{name:'阿倍野Harukas', cat:'观景台', desc:'日本最高摩天大楼，高300米，天台俯瞰大阪壮阔夜景。'}},
+  { id:'shinsaibashi', cat:'shopping', emoji:'👗', lat:34.6748, lng:135.5011, rating:'4.5',
+    en:{name:'Shinsaibashi', cat:'Fashion District', desc:'Osaka\'s premier shopping arcade with covered streets, flagship stores and local boutiques.'},
+    es:{name:'Shinsaibashi', cat:'Distrito de Moda', desc:'La principal galería comercial de Osaka con calles cubiertas, tiendas insignia y boutiques locales.'},
+    zh:{name:'心斋桥', cat:'时尚街区', desc:'大阪首屈一指的购物拱廊，设有有盖街道、旗舰店和本地精品店。'}},
+];
+
+let map, markers = {}, favorites = new Set(), currentPlaceId = null, currentRating = 0;
+const lang = () => localStorage.getItem('lang') || 'en';
+
+function renderCards() {
+  const grid = document.getElementById('placesGrid');
+  grid.innerHTML = '';
+  PLACES.forEach(p => {
+    const l = lang();
+    const d = p[l] || p.en;
+    const isFav = favorites.has(p.id);
+    const card = document.createElement('div');
+    card.className = 'place-card';
+    card.dataset.cat = p.cat;
+    card.dataset.id = p.id;
+    card.innerHTML = `
+      <div class="place-img" style="background:${catColor(p.cat)}">
+        <span style="font-size:3.5rem">${p.emoji}</span>
+        <button class="place-fav ${isFav?'active':''}" onclick="toggleFav(event,'${p.id}')">${isFav?'❤️':'🤍'}</button>
+      </div>
+      <div class="place-body">
+        <div class="place-cat">${d.cat}</div>
+        <div class="place-name">${d.name}</div>
+        <div class="place-desc">${d.desc}</div>
+        <div class="place-meta">
+          <span class="place-rating">★ ${p.rating}</span>
+          <button class="place-review-btn" onclick="openReviews('${p.id}','${d.name}')">Reviews</button>
+        </div>
+      </div>`;
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('place-fav') || e.target.classList.contains('place-review-btn')) return;
+      map.setView([p.lat, p.lng], 15);
+      markers[p.id]?.openPopup();
+    });
+    grid.appendChild(card);
+  });
+}
+
+function catColor(cat) {
+  const m = {historic:'#f5ede0',food:'#fef3e2',park:'#e8f5e9',shopping:'#e3f2fd',hotel:'#fce4ec',night:'#ede7f6'};
+  return m[cat] || '#f5f5f5';
+}
+
+function filterCat(cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-cat="${cat}"]`)?.classList.add('active');
+  document.querySelectorAll('.place-card').forEach(c => {
+    c.classList.toggle('hidden', cat !== 'all' && c.dataset.cat !== cat);
+  });
+}
+
+function toggleFav(e, id) {
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  if (favorites.has(id)) {
+    favorites.delete(id);
+    fetch('/api/favorites', {method:'DELETE',headers:{'Content-Type':'application/json'},body:JSON.stringify({place_id:id})});
+    btn.textContent = '🤍';
+    btn.classList.remove('active');
+  } else {
+    favorites.add(id);
+    fetch('/api/favorites', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({place_id:id})});
+    btn.textContent = '❤️';
+    btn.classList.add('active');
+  }
+}
+
+function openReviews(id, name) {
+  currentPlaceId = id;
+  currentRating = 0;
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('reviewText').value = '';
+  setStar(0);
+  document.getElementById('reviewModal').classList.add('open');
+  loadReviews(id);
+}
+
+function closeModal() {
+  document.getElementById('reviewModal').classList.remove('open');
+}
+
+function setStar(n) {
+  currentRating = n;
+  document.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('lit', parseInt(s.dataset.v) <= n);
+  });
+}
+
+async function loadReviews(id) {
+  const res = await fetch('/api/reviews?place_id=' + id);
+  const data = await res.json();
+  const list = document.getElementById('reviewList');
+  if (data.length === 0) {
+    list.innerHTML = '<p style="font-size:0.85rem;color:var(--ink-soft);text-align:center;padding:1rem 0;">No reviews yet. Be the first!</p>';
+  } else {
+    list.innerHTML = data.map(r => `
+      <div class="review-item">
+        <div class="review-user">${r.username}</div>
+        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+        <div class="review-comment">${r.comment}</div>
+      </div>`).join('');
+  }
+}
+
+async function submitReview() {
+  const comment = document.getElementById('reviewText').value.trim();
+  if (!comment || !currentRating) { alert('Please add a rating and comment.'); return; }
+  await fetch('/api/reviews', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({place_id:currentPlaceId, rating:currentRating, comment})
+  });
+  document.getElementById('reviewText').value = '';
+  setStar(0);
+  loadReviews(currentPlaceId);
+}
+
+async function initFavorites() {
+  const res = await fetch('/api/favorites');
+  const data = await res.json();
+  data.forEach(id => favorites.add(id));
+  renderCards();
+}
+
+function initMap() {
+  map = L.map('map').setView([34.6937, 135.5023], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+  PLACES.forEach(p => {
+    const l = lang();
+    const d = p[l] || p.en;
+    const marker = L.marker([p.lat, p.lng])
+      .addTo(map)
+      .bindPopup(`<b>${d.name}</b><br>${d.cat}<br>★ ${p.rating}`);
+    markers[p.id] = marker;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initMap();
+  initFavorites();
+});
+
+const origSetLang = window.setLang;
+window.setLang = function(l) {
+  origSetLang(l);
+  renderCards();
+};
+</script>
+{% endblock %}

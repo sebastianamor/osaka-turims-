@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Transport Guide – Osaka{% endblock %}
+{% block extra_head %}
+<style>
+.page-hero { background:var(--ink); padding:3rem 2rem; text-align:center; border-bottom:3px solid var(--gold); }
+.page-hero h1 { font-family:'Shippori Mincho',serif; color:white; font-size:2.2rem; font-weight:300; letter-spacing:0.1em; margin-bottom:0.5rem; }
+.page-hero p { color:rgba(255,255,255,0.6); font-size:0.9rem; letter-spacing:0.08em; }
+.transport-body { max-width:1100px; margin:3rem auto; padding:0 2rem; }
+.t-section { margin-bottom:3rem; }
+.t-section h2 { font-family:'Shippori Mincho',serif; font-size:1.5rem; color:var(--ink); margin-bottom:1.5rem; padding-bottom:0.8rem; border-bottom:2px solid var(--gold); }
+.cards-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem; }
+.t-card { background:var(--white); border:1px solid var(--border); border-radius:2px; padding:1.5rem; transition:box-shadow 0.2s; }
+.t-card:hover { box-shadow:0 4px 16px rgba(184,134,11,0.12); }
+.t-icon { font-size:2rem; margin-bottom:0.8rem; }
+.t-name { font-family:'Shippori Mincho',serif; font-size:1rem; margin-bottom:0.5rem; color:var(--ink); }
+.t-info { font-size:0.82rem; color:var(--ink-soft); line-height:1.7; }
+.t-price { display:inline-block; margin-top:0.8rem; background:var(--red-light); color:var(--red); padding:0.2rem 0.7rem; border-radius:20px; font-size:0.78rem; }
+.tip-box { background:var(--gold-light); border:1px solid var(--border); border-left:4px solid var(--gold); padding:1.2rem 1.5rem; border-radius:2px; margin-bottom:1rem; }
+.tip-box .tip-head { font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem; }
+.tip-box p { font-size:0.88rem; color:var(--ink-mid); line-height:1.7; }
+.line-table { width:100%; border-collapse:collapse; }
+.line-table th { background:var(--ink); color:rgba(255,255,255,0.85); padding:0.7rem 1rem; font-size:0.8rem; letter-spacing:0.08em; text-align:left; }
+.line-table td { padding:0.7rem 1rem; font-size:0.85rem; border-bottom:1px solid var(--border); color:var(--ink-mid); }
+.line-table tr:nth-child(even) td { background:var(--paper); }
+.dot { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="lang-bar">
+  <span data-lang="en" onclick="setLang('en')">English</span>
+  <span data-lang="es" onclick="setLang('es')">Español</span>
+  <span data-lang="zh" onclick="setLang('zh')">中文</span>
+</div>
+<div class="page-hero">
+  <h1 data-en="Transport Guide" data-es="Guía de Transporte" data-zh="交通指南">Transport Guide</h1>
+  <p data-en="Getting around Osaka easily" data-es="Moverse por Osaka con facilidad" data-zh="轻松游览大阪">Getting around Osaka easily</p>
+</div>
+<div class="transport-body">
+  <div class="t-section">
+    <h2 data-en="IC Cards – Essential for Osaka" data-es="Tarjetas IC – Esencial para Osaka" data-zh="IC卡 – 大阪必备">IC Cards – Essential for Osaka</h2>
+    <div class="cards-row">
+      <div class="t-card">
+        <div class="t-icon">💳</div>
+        <div class="t-name">ICOCA Card</div>
+        <div class="t-info" data-en="The standard IC card for Osaka. Works on all subway, JR and bus lines. Reload at any station." data-es="La tarjeta IC estándar para Osaka. Funciona en metro, JR y autobús." data-zh="大阪标准IC卡，适用于所有地铁、JR和公共汽车线路。">The standard IC card for Osaka. Works on all subway, JR and bus lines.</div>
+        <span class="t-price" data-en="¥2,000 deposit incl." data-es="¥2,000 con depósito" data-zh="¥2,000（含押金）">¥2,000 deposit incl.</span>
+      </div>
+      <div class="t-card">
+        <div class="t-icon">🎫</div>
+        <div class="t-name" data-en="Osaka Amazing Pass" data-es="Osaka Amazing Pass" data-zh="大阪畅游卡">Osaka Amazing Pass</div>
+        <div class="t-info" data-en="Unlimited rides on subway + free entry to 40+ attractions including Osaka Castle." data-es="Viajes ilimitados en metro + entrada gratuita a más de 40 atracciones." data-zh="地铁无限乘坐+免费进入40多个景点，包括大阪城。">Unlimited rides + free entry to 40+ attractions.</div>
+        <span class="t-price" data-en="¥2,800/day" data-es="¥2,800/día" data-zh="¥2,800/天">¥2,800/day</span>
+      </div>
+      <div class="t-card">
+        <div class="t-icon">🚃</div>
+        <div class="t-name">Kansai Thru Pass</div>
+        <div class="t-info" data-en="For touring Kyoto, Nara and Kobe too. Unlimited rides on non-JR trains across Kansai." data-es="Para visitar Kioto, Nara y Kobe. Viajes ilimitados en trenes no JR." data-zh="适合游览京都、奈良和神户，关西地区非JR列车无限乘坐。">For touring Kyoto, Nara and Kobe. Unlimited non-JR rides.</div>
+        <span class="t-price" data-en="¥4,380 / 2 days" data-es="¥4,380 / 2 días" data-zh="¥4,380 / 2天">¥4,380 / 2 days</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="t-section">
+    <h2 data-en="Osaka Metro Lines" data-es="Líneas de Metro de Osaka" data-zh="大阪地铁线路">Osaka Metro Lines</h2>
+    <table class="line-table">
+      <thead>
+        <tr>
+          <th data-en="Line" data-es="Línea" data-zh="线路">Line</th>
+          <th data-en="Color" data-es="Color" data-zh="颜色">Color</th>
+          <th data-en="Key Stops" data-es="Paradas Clave" data-zh="主要站点">Key Stops</th>
+          <th data-en="Fare" data-es="Tarifa" data-zh="票价">Fare</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Midosuji</td><td><span class="dot" style="background:#e5171f"></span>Red</td><td data-en="Umeda ↔ Namba ↔ Tennoji" data-es="Umeda ↔ Namba ↔ Tennoji" data-zh="梅田 ↔ 难波 ↔ 天王寺">Umeda ↔ Namba ↔ Tennoji</td><td>¥180~</td></tr>
+        <tr><td>Tanimachi</td><td><span class="dot" style="background:#8244a7"></span>Purple</td><td data-en="Higashi-Umeda ↔ Tenmabashi" data-es="Higashi-Umeda ↔ Tenmabashi" data-zh="东梅田 ↔ 天满桥">Higashi-Umeda ↔ Tenmabashi</td><td>¥180~</td></tr>
+        <tr><td>Yotsubashi</td><td><span class="dot" style="background:#1971c2"></span>Blue</td><td data-en="Nishi-Umeda ↔ Suminoekoen" data-es="Nishi-Umeda ↔ Suminoekoen" data-zh="西梅田 ↔ 住之江公园">Nishi-Umeda ↔ Suminoekoen</td><td>¥180~</td></tr>
+        <tr><td>Chuo</td><td><span class="dot" style="background:#109b49"></span>Green</td><td data-en="Cosmosquare ↔ Kintetsu Namba" data-es="Cosmosquare ↔ Kintetsu Namba" data-zh="宇宙广场 ↔ 近铁难波">Cosmosquare ↔ Kintetsu Namba</td><td>¥180~</td></tr>
+        <tr><td>Sakaisuji</td><td><span class="dot" style="background:#dc6b2f"></span>Brown</td><td data-en="Tenjimbashisuji6 ↔ Tengachaya" data-es="Tenjimbashisuji6 ↔ Tengachaya" data-zh="天神桥筋六 ↔ 天下茶屋">Tenjimbashisuji6 ↔ Tengachaya</td><td>¥180~</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="t-section">
+    <h2 data-en="Practical Tips" data-es="Consejos Prácticos" data-zh="实用小贴士">Practical Tips</h2>
+    <div class="tip-box">
+      <div class="tip-head">💡 Tip 1</div>
+      <p data-en="Always tap in AND out with your IC card — failing to tap out charges the maximum fare." data-es="Siempre pasa la tarjeta IC al entrar Y al salir, de lo contrario se cobra la tarifa máxima." data-zh="进站和出站都必须刷IC卡，否则将收取最高票价。">Always tap in AND out with your IC card — failing to tap out charges the maximum fare.</p>
+    </div>
+    <div class="tip-box">
+      <div class="tip-head">💡 Tip 2</div>
+      <p data-en="Taxis in Osaka are metered and reliable but expensive. Avoid during rush hour — use the subway instead." data-es="Los taxis en Osaka son de taxímetro y confiables pero caros. Evítalos en hora punta." data-zh="大阪出租车计费可靠但价格较贵，高峰期请改乘地铁。">Taxis are reliable but expensive. Avoid during rush hour — use the subway instead.</p>
+    </div>
+    <div class="tip-box">
+      <div class="tip-head">💡 Tip 3</div>
+      <p data-en="Kansai Airport (KIX) to Osaka Namba: take the Nankai Rapi:t express — 38 minutes, ¥1,430." data-es="De KIX a Namba: toma el express Nankai Rapi:t — 38 minutos, ¥1.430." data-zh="关西机场到难波：乘坐南海Rapi:t特急，38分钟，¥1,430。">KIX to Namba: Nankai Rapi:t express — 38 minutes, ¥1,430.</p>
+    </div>
+    <div class="tip-box">
+      <div class="tip-head">💡 Tip 4</div>
+      <p data-en="Rent a bicycle for flat inner-city areas — Osaka is very cycle-friendly with dedicated paths near the river." data-es="Alquila una bicicleta para las zonas planas — Osaka es muy cicloamigable con carriles junto al río." data-zh="在平坦的市区内租自行车，大阪河边有专用自行车道，非常适合骑行。">Rent a bicycle — Osaka is very cycle-friendly with dedicated paths near the river.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

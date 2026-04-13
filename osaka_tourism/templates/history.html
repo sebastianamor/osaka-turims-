@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}History of Osaka{% endblock %}
+{% block extra_head %}
+<style>
+.page-hero { background:var(--ink); padding:3rem 2rem; text-align:center; border-bottom:3px solid var(--gold); }
+.page-hero h1 { font-family:'Shippori Mincho',serif; color:white; font-size:2.2rem; font-weight:300; letter-spacing:0.1em; margin-bottom:0.5rem; }
+.page-hero p { color:rgba(255,255,255,0.6); font-size:0.9rem; letter-spacing:0.08em; }
+.history-body { max-width:900px; margin:3rem auto; padding:0 2rem; }
+.timeline { position:relative; padding-left:2.5rem; }
+.timeline::before {
+  content:''; position:absolute; left:0.6rem; top:0; bottom:0;
+  width:2px; background:var(--border);
+}
+.tl-item { position:relative; margin-bottom:3rem; }
+.tl-dot {
+  position:absolute; left:-2.5rem;
+  width:22px; height:22px; border-radius:50%;
+  background:var(--red); border:3px solid var(--paper);
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.6rem; color:white; font-weight:700;
+  top:0.2rem;
+}
+.tl-era {
+  font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:0.3rem;
+}
+.tl-title {
+  font-family:'Shippori Mincho',serif;
+  font-size:1.3rem; color:var(--ink); margin-bottom:0.7rem;
+}
+.tl-body { font-size:0.9rem; color:var(--ink-soft); line-height:1.85; }
+.tl-tag {
+  display:inline-block; margin-top:0.7rem;
+  background:var(--paper-dark); color:var(--ink-mid);
+  padding:0.2rem 0.7rem; border-radius:2px; font-size:0.75rem;
+  letter-spacing:0.06em;
+}
+.fact-strip {
+  background:var(--red);
+  padding:2.5rem 2rem;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1px; margin:3rem 0;
+}
+.fact-item { padding:1.5rem; text-align:center; background:rgba(255,255,255,0.07); }
+.fact-num { font-family:'Shippori Mincho',serif; font-size:2rem; color:white; margin-bottom:0.3rem; }
+.fact-label { font-size:0.78rem; color:rgba(255,255,255,0.7); letter-spacing:0.1em; text-transform:uppercase; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="lang-bar">
+  <span data-lang="en" onclick="setLang('en')">English</span>
+  <span data-lang="es" onclick="setLang('es')">Español</span>
+  <span data-lang="zh" onclick="setLang('zh')">中文</span>
+</div>
+<div class="page-hero">
+  <h1 data-en="History of Osaka" data-es="Historia de Osaka" data-zh="大阪历史">History of Osaka</h1>
+  <p data-en="2,000 years of trade, power and resilience" data-es="2,000 años de comercio, poder y resiliencia" data-zh="2000年的贸易、权力与韧性">2,000 years of trade, power and resilience</p>
+</div>
+
+<div class="fact-strip">
+  <div class="fact-item"><div class="fact-num">~4th C</div><div class="fact-label" data-en="Founded" data-es="Fundada" data-zh="建城">Founded</div></div>
+  <div class="fact-item"><div class="fact-num">2.7M</div><div class="fact-label" data-en="Population" data-es="Población" data-zh="人口">Population</div></div>
+  <div class="fact-item"><div class="fact-num">223 km²</div><div class="fact-label" data-en="City Area" data-es="Área Urbana" data-zh="城市面积">City Area</div></div>
+  <div class="fact-item"><div class="fact-num">#2</div><div class="fact-label" data-en="Japan's Economy" data-es="Economía de Japón" data-zh="日本经济">Japan's Economy</div></div>
+</div>
+
+<div class="history-body">
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot">古</div>
+      <div class="tl-era" data-en="Ancient Era · 4th Century" data-es="Era Antigua · Siglo IV" data-zh="古代 · 4世纪">Ancient Era · 4th Century</div>
+      <div class="tl-title" data-en="Naniwa – Japan's First Capital" data-es="Naniwa – Primera Capital de Japón" data-zh="难波 – 日本首都">Naniwa – Japan's First Capital</div>
+      <div class="tl-body" data-en="Osaka, then called Naniwa, served as the gateway between Japan and the Asian continent. Emperor Kotoku established the Naniwa Nagara-Toyosaki Palace here in 645 AD, making it briefly Japan's imperial capital. The city's natural harbor made it the center of early Japanese trade and diplomacy." data-es="Osaka, entonces llamada Naniwa, sirvió como puerta de entrada entre Japón y el continente asiático. El emperador Kotoku estableció el Palacio Naniwa Nagara-Toyosaki en 645 d.C., convirtiéndola brevemente en capital imperial." data-zh="大阪当时称为难波，是日本与亚洲大陆之间的门户。公元645年，孝德天皇在此建立难波长柄丰碕宫，使其短暂成为日本皇都。">Osaka, then called Naniwa, served as the gateway between Japan and the Asian continent. Emperor Kotoku established the Naniwa Nagara-Toyosaki Palace here in 645 AD.</div>
+      <span class="tl-tag">Naniwa Palace · Shitennoji Temple</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">城</div>
+      <div class="tl-era" data-en="Feudal Era · 1583" data-es="Era Feudal · 1583" data-zh="封建时代 · 1583年">Feudal Era · 1583</div>
+      <div class="tl-title" data-en="Toyotomi Hideyoshi Builds Osaka Castle" data-es="Toyotomi Hideyoshi Construye el Castillo de Osaka" data-zh="丰臣秀吉建造大阪城">Toyotomi Hideyoshi Builds Osaka Castle</div>
+      <div class="tl-body" data-en="The warlord Toyotomi Hideyoshi chose Osaka as his base to unify Japan and began constructing the magnificent Osaka Castle in 1583. The castle became the political and military center of Japan. Hideyoshi also transformed the city into a commercial powerhouse by encouraging merchants to settle around the castle town." data-es="El señor de la guerra Toyotomi Hideyoshi eligió Osaka como base para unificar Japón y comenzó a construir el magnífico Castillo de Osaka en 1583." data-zh="战国大名丰臣秀吉以大阪为据点统一日本，于1583年开始修建宏伟的大阪城，城堡成为日本政治与军事中心。">The warlord Toyotomi Hideyoshi chose Osaka as his base to unify Japan and began constructing the magnificent Osaka Castle in 1583.</div>
+      <span class="tl-tag">Osaka Castle · Toyotomi Clan</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">商</div>
+      <div class="tl-era" data-en="Edo Period · 1600s–1800s" data-es="Período Edo · Siglos XVII–XIX" data-zh="江户时代 · 17–19世纪">Edo Period · 1600s–1800s</div>
+      <div class="tl-title" data-en="Tenka no Daidokoro – Japan's Kitchen" data-es="Tenka no Daidokoro – La Cocina de Japón" data-zh="天下の台所 – 日本的厨房">Tenka no Daidokoro – Japan's Kitchen</div>
+      <div class="tl-body" data-en="During the Edo period, Osaka earned its famous nickname Tenka no Daidokoro (Japan's kitchen). The city became the nation's largest commercial hub, with merchants controlling the trade of rice, textiles and other goods. The Dojima Rice Exchange, founded in 1697, is considered the world's first futures trading market." data-es="Durante el período Edo, Osaka ganó su famoso apodo Tenka no Daidokoro (cocina de Japón). La ciudad se convirtió en el mayor centro comercial del país, con mercaderes controlando el comercio de arroz, textiles y otros bienes." data-zh="江户时代，大阪赢得了"天下的厨房"的美誉，成为全国最大的商业中心。堂岛米市场创建于1697年，被认为是世界上最早的期货交易市场。">During the Edo period, Osaka became the nation's largest commercial hub. The Dojima Rice Exchange (1697) is considered the world's first futures market.</div>
+      <span class="tl-tag">Dojima Rice Exchange · Merchant Culture</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">明</div>
+      <div class="tl-era" data-en="Meiji Era · 1868" data-es="Era Meiji · 1868" data-zh="明治时代 · 1868年">Meiji Era · 1868</div>
+      <div class="tl-title" data-en="Industrial Revolution & Modernization" data-es="Revolución Industrial y Modernización" data-zh="工业革命与现代化">Industrial Revolution & Modernization</div>
+      <div class="tl-body" data-en="The Meiji Restoration transformed Osaka into Japan's industrial capital. Textile mills, chemical plants and railway networks expanded rapidly. The 1903 Fifth National Industrial Exhibition drew millions of visitors. Osaka became known as the Manchester of the East, driving Japan's early modern economy." data-es="La Restauración Meiji transformó Osaka en la capital industrial de Japón. Fábricas textiles, plantas químicas y redes ferroviarias se expandieron rápidamente." data-zh="明治维新将大阪转变为日本的工业首都，纺织厂、化工厂和铁路网络迅速扩张，大阪因此被称为"东方的曼彻斯特"。">The Meiji Restoration transformed Osaka into Japan's industrial capital, earning it the nickname 'the Manchester of the East.'</div>
+      <span class="tl-tag">Textile Industry · National Exhibition 1903</span>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot">現</div>
+      <div class="tl-era" data-en="Modern Era · 1945–Present" data-es="Era Moderna · 1945–Presente" data-zh="现代 · 1945年至今">Modern Era · 1945–Present</div>
+      <div class="tl-title" data-en="Rebirth as a Global City" data-es="Renacimiento como Ciudad Global" data-zh="重生为国际都市">Rebirth as a Global City</div>
+      <div class="tl-body" data-en="After the devastation of WWII, Osaka rebuilt itself as a global commercial and cultural hub. The 1970 World Expo (Expo '70) put Osaka on the world stage. Today, Osaka is Japan's second-largest economy, home to international companies, a UNESCO-recognized cuisine culture, and a thriving tourism industry attracting over 10 million visitors yearly." data-es="Tras la devastación de la Segunda Guerra Mundial, Osaka se reconstruyó como un centro comercial y cultural global. La Expo '70 puso a Osaka en el escenario mundial. Hoy, Osaka es la segunda economía de Japón." data-zh="二战后，大阪重建为全球商业和文化中心。1970年世博会将大阪推向世界舞台。如今，大阪是日本第二大经济体，每年吸引超过1000万游客。">After WWII, Osaka rebuilt and the 1970 World Expo put it on the global stage. Today it's Japan's second-largest economy attracting 10+ million visitors yearly.</div>
+      <span class="tl-tag">Expo '70 · Universal Studios Japan · Osaka 2025</span>
+    </div>
+  </div>
+</div>
+{% endblock %}

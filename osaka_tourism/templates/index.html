@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}Osaka Explorer – Discover Japan's Soul{% endblock %}
+{% block extra_head %}
+<style>
+.hero {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--ink);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1a0a04 0%, #2d1408 40%, #1a0d1a 100%);
+  z-index: 0;
+}
+.hero-pattern {
+  position: absolute; inset: 0; z-index: 1;
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(184,134,11,0.07) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(184,134,11,0.07) 40px);
+}
+.hero-kanji {
+  position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 22vw;
+  color: rgba(192,57,43,0.06);
+  line-height: 1;
+  z-index: 1;
+  user-select: none;
+  letter-spacing: -0.05em;
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 3rem;
+  width: 100%;
+}
+.hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.hero-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 300;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+.hero-title .accent { color: var(--gold); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-strip {
+  background: var(--gold-light);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  overflow: hidden;
+}
+.strip-item {
+  flex: 1;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border-right: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.strip-item:last-child { border-right: none; }
+.strip-item:hover { background: #f5e8c0; }
+.strip-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.strip-label {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+.strip-sub { font-size: 0.8rem; color: var(--ink-soft); }
+.features {
+  max-width: 1200px;
+  margin: 5rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+.feature-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 2rem;
+  transition: box-shadow 0.2s;
+}
+.feature-card:hover { box-shadow: 0 4px 24px rgba(184,134,11,0.12); }
+.feature-card .icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.feature-card h3 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.6rem;
+  color: var(--ink);
+}
+.feature-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7; }
+.cta-band {
+  background: var(--red);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.cta-band h2 {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+.cta-band p { color: rgba(255,255,255,0.8); margin-bottom: 2rem; font-size: 1rem; }
+.btn-white {
+  background: white;
+  color: var(--red);
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+.btn-white:hover { background: #fdf0ef; }
+footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+footer span { color: var(--gold); }
+</style>
+{% endblock %}
+{% block content %}
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-kanji">大阪</div>
+  <div class="hero-content">
+    <p class="hero-eyebrow"
+       data-en="Japan's Kitchen · Naniwa · Merchant City"
+       data-es="La Cocina de Japón · Naniwa · Ciudad Mercante"
+       data-zh="日本厨房 · 浪速 · 商人之城">Japan's Kitchen · Naniwa · Merchant City</p>
+    <h1 class="hero-title">
+      Discover<br><span class="accent">Osaka</span>
+    </h1>
+    <p class="hero-sub"
+       data-en="Explore the castles, temples, neighborhoods, cuisine and hidden gems of Japan's most vibrant city."
+       data-es="Explora los castillos, templos, barrios, gastronomía y joyas ocultas de la ciudad más vibrante de Japón."
+       data-zh="探索大阪的城堡、神社、街区、美食和隐藏的宝藏。">
+      Explore the castles, temples, neighborhoods, cuisine and hidden gems of Japan's most vibrant city.
+    </p>
+    <div class="hero-actions">
+      <a href="/register" class="btn btn-red"
+         data-en="Start Exploring" data-es="Comenzar" data-zh="开始探索">Start Exploring</a>
+      <a href="/login" class="btn btn-outline" style="color:white;border-color:rgba(255,255,255,0.4);"
+         data-en="Sign In" data-es="Iniciar Sesión" data-zh="登录">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<div class="lang-bar">
+  <span data-lang="en" onclick="setLang('en')">English</span>
+  <span data-lang="es" onclick="setLang('es')">Español</span>
+  <span data-lang="zh" onclick="setLang('zh')">中文</span>
+</div>
+
+<div class="hero-strip">
+  <div class="strip-item">
+    <div class="strip-icon">🏯</div>
+    <div class="strip-label" data-en="Historic Sites" data-es="Sitios Históricos" data-zh="历史遗址">Historic Sites</div>
+    <div class="strip-sub" data-en="Castles, temples & shrines" data-es="Castillos, templos y santuarios" data-zh="城堡、寺庙与神社">Castles, temples & shrines</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-icon">🍜</div>
+    <div class="strip-label" data-en="Food & Culture" data-es="Gastronomía" data-zh="美食文化">Food & Culture</div>
+    <div class="strip-sub" data-en="Takoyaki, ramen & more" data-es="Takoyaki, ramen y más" data-zh="章鱼烧、拉面等">Takoyaki, ramen & more</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-icon">🚇</div>
+    <div class="strip-label" data-en="Transport Guide" data-es="Guía de Transporte" data-zh="交通指南">Transport Guide</div>
+    <div class="strip-sub" data-en="Metro, JR & IC cards" data-es="Metro, JR y tarjetas IC" data-zh="地铁、JR及IC卡">Metro, JR & IC cards</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-icon">🏨</div>
+    <div class="strip-label" data-en="Where to Stay" data-es="Dónde Alojarse" data-zh="住宿推荐">Where to Stay</div>
+    <div class="strip-sub" data-en="Hotels for every budget" data-es="Hoteles para todo presupuesto" data-zh="各预算酒店推荐">Hotels for every budget</div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="feature-card">
+    <div class="icon">🗺️</div>
+    <h3 data-en="Interactive Map" data-es="Mapa Interactivo" data-zh="互动地图">Interactive Map</h3>
+    <p data-en="Navigate Osaka with an interactive map showing all key attractions, with GPS-ready directions." data-es="Navega por Osaka con un mapa interactivo con todas las atracciones principales." data-zh="通过互动地图导航大阪，显示所有主要景点。">Navigate Osaka with an interactive map showing all key attractions.</p>
+  </div>
+  <div class="feature-card">
+    <div class="icon">❤️</div>
+    <h3 data-en="Save Favorites" data-es="Guardar Favoritos" data-zh="收藏夹">Save Favorites</h3>
+    <p data-en="Build your personal list of must-see places and return to them anytime." data-es="Crea tu lista personal de lugares imprescindibles." data-zh="建立您的必看地点个人清单。">Build your personal list of must-see places.</p>
+  </div>
+  <div class="feature-card">
+    <div class="icon">⭐</div>
+    <h3 data-en="Traveler Reviews" data-es="Reseñas de Viajeros" data-zh="旅行者评论">Traveler Reviews</h3>
+    <p data-en="Read honest reviews from visitors and share your own experiences." data-es="Lee reseñas de viajeros y comparte tus propias experiencias." data-zh="阅读游客的真实评论并分享您的经历。">Read honest reviews and share your experiences.</p>
+  </div>
+  <div class="feature-card">
+    <div class="icon">🎌</div>
+    <h3 data-en="3 Languages" data-es="3 Idiomas" data-zh="3种语言">3 Languages</h3>
+    <p data-en="Full support in English, Spanish and Chinese so every traveler feels at home." data-es="Soporte completo en inglés, español y chino." data-zh="完整支持英文、西班牙文和中文。">English, Spanish and Chinese fully supported.</p>
+  </div>
+</div>
+
+<div class="cta-band">
+  <h2 data-en="Ready to explore Osaka?" data-es="¿Listo para explorar Osaka?" data-zh="准备好探索大阪了吗？">Ready to explore Osaka?</h2>
+  <p data-en="Create your free account and start planning your perfect trip." data-es="Crea tu cuenta gratuita y empieza a planear tu viaje perfecto." data-zh="创建免费账户，开始规划您的完美旅程。">Create your free account and start planning your perfect trip.</p>
+  <a href="/register" class="btn-white"
+     data-en="Get Started – It's Free" data-es="Comenzar – Es Gratis" data-zh="免费开始">Get Started – It's Free</a>
+</div>
+
+<footer>
+  <span>大阪</span> · Osaka Explorer · Built with moreiratek 
+</footer>
+{% endblock %}

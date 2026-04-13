@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Login – Osaka Explorer{% endblock %}
+{% block extra_head %}
+<style>
+.auth-wrapper {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  padding: 2rem;
+}
+.auth-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+.auth-header {
+  background: var(--ink);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+}
+.auth-header::after {
+  content: '⛩';
+  position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+  font-size: 1.5rem;
+  background: var(--white);
+  width: 40px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.auth-kanji {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 3rem;
+  color: rgba(192,57,43,0.4);
+  margin-bottom: 0.5rem;
+}
+.auth-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.4rem;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+.auth-body { padding: 2.5rem 2rem 2rem; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-group input:focus { border-color: var(--gold); background: var(--white); }
+.submit-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+.submit-btn:hover { background: #a93226; }
+.auth-footer {
+  text-align: center;
+  padding: 1rem 2rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--border);
+}
+.auth-footer a { color: var(--red); text-decoration: none; }
+.divider {
+  text-align: center;
+  margin: 1.5rem 0 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+  position: relative;
+}
+.divider::before, .divider::after {
+  content: '';
+  position: absolute; top: 50%;
+  width: 35%; height: 1px;
+  background: var(--border);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="lang-bar">
+  <span data-lang="en" onclick="setLang('en')">English</span>
+  <span data-lang="es" onclick="setLang('es')">Español</span>
+  <span data-lang="zh" onclick="setLang('zh')">中文</span>
+</div>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-kanji">入</div>
+      <div class="auth-title" data-en="Welcome Back" data-es="Bienvenido" data-zh="欢迎回来">Welcome Back</div>
+    </div>
+    <form method="POST" class="auth-body">
+      <div class="form-group">
+        <label data-en="Username" data-es="Usuario" data-zh="用户名">Username</label>
+        <input type="text" name="username" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label data-en="Password" data-es="Contraseña" data-zh="密码">Password</label>
+        <input type="password" name="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="submit-btn"
+              data-en="Sign In to Osaka Explorer"
+              data-es="Iniciar Sesión"
+              data-zh="登录大阪探索">Sign In to Osaka Explorer</button>
+    </form>
+    <div class="auth-footer">
+      <span data-en="No account yet?" data-es="¿Sin cuenta?" data-zh="还没有账户？">No account yet?</span>
+      <a href="/register" data-en="Register here" data-es="Regístrate aquí" data-zh="在此注册">Register here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

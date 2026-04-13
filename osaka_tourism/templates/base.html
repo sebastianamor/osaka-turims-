@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Osaka Explorer{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Shippori+Mincho:wght@400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #C0392B;
+  --red-light: #f9e8e6;
+  --gold: #B8860B;
+  --gold-light: #fdf5e0;
+  --ink: #1a1208;
+  --ink-mid: #4a3728;
+  --ink-soft: #7a6455;
+  --paper: #faf7f2;
+  --paper-dark: #f0ebe0;
+  --white: #ffffff;
+  --border: rgba(184,134,11,0.25);
+  --nav-h: 64px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-brand {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.35rem;
+  color: var(--red);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 0.5rem;
+  letter-spacing: 0.04em;
+}
+.nav-brand::before {
+  content: '⛩';
+  font-size: 1.2rem;
+}
+.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--ink-mid);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+.nav-user {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  display: flex; align-items: center; gap: 1rem;
+}
+.nav-user .logout {
+  background: var(--red-light);
+  color: var(--red);
+  border: 1px solid rgba(192,57,43,0.2);
+  padding: 0.3rem 0.9rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-user .logout:hover { background: #f5d0cc; }
+main { padding-top: var(--nav-h); min-height: 100vh; }
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.6rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+.btn-red {
+  background: var(--red);
+  color: white;
+}
+.btn-red:hover { background: #a93226; }
+.btn-outline {
+  background: transparent;
+  color: var(--red);
+  border: 1.5px solid var(--red);
+}
+.btn-outline:hover { background: var(--red-light); }
+.lang-bar {
+  background: var(--gold-light);
+  border-bottom: 1px solid var(--border);
+  padding: 0.3rem 2rem;
+  display: flex; gap: 1.5rem;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+.lang-bar span { cursor: pointer; }
+.lang-bar span.active { color: var(--gold); font-weight: 600; }
+.flash {
+  padding: 0.8rem 1.5rem;
+  margin: 1rem 2rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.flash.error { background: var(--red-light); color: var(--red); border: 1px solid rgba(192,57,43,0.3); }
+.flash.success { background: #e8f5e9; color: #2e7d32; border: 1px solid rgba(46,125,50,0.3); }
+</style>
+{% block extra_head %}{% endblock %}
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="/">Osaka Explorer</a>
+  <div class="nav-links">
+    {% if session.get('user_id') %}
+    <a href="/explore" {% if request.path == '/explore' %}class="active"{% endif %}>Explore</a>
+    <a href="/history" {% if request.path == '/history' %}class="active"{% endif %}>History</a>
+    <a href="/transport" {% if request.path == '/transport' %}class="active"{% endif %}>Transport</a>
+    {% endif %}
+  </div>
+  <div class="nav-user">
+    {% if session.get('user_id') %}
+    <span>{{ session.username }}</span>
+    <a class="logout" href="/logout">Logout</a>
+    {% else %}
+    <a href="/login" class="btn btn-outline" style="padding:0.3rem 0.9rem;font-size:0.8rem;">Login</a>
+    <a href="/register" class="btn btn-red" style="padding:0.3rem 0.9rem;font-size:0.8rem;">Register</a>
+    {% endif %}
+  </div>
+</nav>
+<main>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for msg in messages %}
+    <div class="flash {% if msg in ['user_exists','invalid_credentials'] %}error{% else %}success{% endif %}">
+      {% if msg == 'registration_success' %}Account created! Please log in.
+      {% elif msg == 'user_exists' %}Username or email already exists.
+      {% elif msg == 'invalid_credentials' %}Invalid username or password.
+      {% endif %}
+    </div>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+<script>
+function setLang(l) {
+  document.querySelectorAll('.lang-bar span').forEach(s => s.classList.remove('active'));
+  document.querySelector('.lang-bar span[data-lang="'+l+'"]')?.classList.add('active');
+  document.querySelectorAll('[data-en],[data-es],[data-zh]').forEach(el => {
+    if (el.dataset[l]) el.textContent = el.dataset[l];
+  });
+  localStorage.setItem('lang', l);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('lang') || 'en';
+  setLang(saved);
+});
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
