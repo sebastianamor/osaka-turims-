@@ -179,7 +179,7 @@ textarea.review-input {
   <button class="filter-btn" data-cat="shopping" onclick="filterCat('shopping')" data-en="Shopping" data-es="Compras" data-zh="购物">Shopping</button>
   <button class="filter-btn" data-cat="hotel" onclick="filterCat('hotel')" data-en="Hotels" data-es="Hoteles" data-zh="酒店">Hotels</button>
   <button class="filter-btn" data-cat="night" onclick="filterCat('night')" data-en="Nightlife" data-es="Vida Nocturna" data-zh="夜生活">Nightlife</button>
-   <button class="filter-btn" data-cat="night" onclick="filterCat('night')" data-en="Nightlife" data-es="Vida Nocturna" data-zh="夜生活">Otaku</button> <!-- Esto es un comentario -->
+  <button class="filter-btn" data-cat="otaku" onclick="filterCat('otaku')" data-en="Otaku" data-es="Otaku" data-zh="二次元">Otaku</button>
 </div>
 
 <div class="explore-layout">
@@ -259,6 +259,22 @@ const PLACES = [
     en:{name:'Abeno Harukas', cat:'Observatory & Night Views', desc:'Japan\'s tallest skyscraper at 300m. Sky terrace with breathtaking panoramic night views of Osaka.'},
     es:{name:'Abeno Harukas', cat:'Observatorio', desc:'El rascacielos más alto de Japón con 300m. Terraza con vistas nocturnas panorámicas de Osaka.'},
     zh:{name:'阿倍野Harukas', cat:'观景台', desc:'日本最高摩天大楼，高300米，天台俯瞰大阪壮阔夜景。'}},
+  { id:'denden_town', cat:'otaku', emoji:'🎮', lat:34.6622, lng:135.5057, rating:'4.7',
+    en:{name:'Den-Den Town', cat:'Otaku District', desc:'Osaka\'s famous electronics and anime district. Rows of shops selling manga, figures, retro games, cosplay costumes and electronics.'},
+    es:{name:'Den-Den Town', cat:'Distrito Otaku', desc:'El famoso barrio de electrónica y anime de Osaka. Filas de tiendas con manga, figuras, videojuegos retro, cosplay y electrónica.'},
+    zh:{name:'电电城', cat:'御宅族街区', desc:'大阪著名的电子产品和动漫街区，商店林立，销售漫画、手办、复古游戏、cosplay服装和电子产品。'}},
+  { id:'animate_osaka', cat:'otaku', emoji:'📚', lat:34.6632, lng:135.5044, rating:'4.6',
+    en:{name:'Animate Osaka Nipponbashi', cat:'Anime & Manga Store', desc:'Japan\'s largest anime chain store. 6 floors packed with manga, light novels, anime DVDs, CDs, figures and official merchandise.'},
+    es:{name:'Animate Osaka Nipponbashi', cat:'Tienda de Anime y Manga', desc:'La cadena de anime más grande de Japón. 6 pisos con manga, novelas ligeras, DVDs de anime, CDs, figuras y merchandising oficial.'},
+    zh:{name:'Animate大阪日本桥店', cat:'动漫漫画店', desc:'日本最大的动漫连锁店，6层楼满载漫画、轻小说、动漫DVD、CD、手办和官方周边。'}},
+  { id:'kotobukiya_osaka', cat:'otaku', emoji:'🗿', lat:34.6628, lng:135.5050, rating:'4.8',
+    en:{name:'Kotobukiya Osaka', cat:'Figure & Collectibles', desc:'Premium figure manufacturer\'s flagship shop. Exclusive Gundam, Marvel, Star Wars and anime figures. A must for collectors.'},
+    es:{name:'Kotobukiya Osaka', cat:'Figuras y Coleccionables', desc:'Tienda insignia del fabricante de figuras premium. Figuras exclusivas de Gundam, Marvel, Star Wars y anime. Imprescindible para coleccionistas.'},
+    zh:{name:'寿屋大阪店', cat:'手办与收藏品', desc:'高端手办厂商旗舰店，独家高达、漫威、星球大战和动漫手办，收藏家必访之地。'}},
+  { id:'super_potato_osaka', cat:'otaku', emoji:'👾', lat:34.6625, lng:135.5048, rating:'4.7',
+    en:{name:'Super Potato Osaka', cat:'Retro Game Store', desc:'Legendary retro game shop with Famicom, Super Nintendo, Sega and PlayStation classics. A paradise for vintage gaming fans.'},
+    es:{name:'Super Potato Osaka', cat:'Tienda de Juegos Retro', desc:'Legendaria tienda de juegos retro con Famicom, Super Nintendo, Sega y clásicos de PlayStation. Paraíso para fans del gaming vintage.'},
+    zh:{name:'超级薯条大阪店', cat:'复古游戏店', desc:'传奇复古游戏店，收藏FC、超任、世嘉及PlayStation经典游戏，复古游戏迷的天堂。'}},
   { id:'shinsaibashi', cat:'shopping', emoji:'👗', lat:34.6748, lng:135.5011, rating:'4.5',
     en:{name:'Shinsaibashi', cat:'Fashion District', desc:'Osaka\'s premier shopping arcade with covered streets, flagship stores and local boutiques.'},
     es:{name:'Shinsaibashi', cat:'Distrito de Moda', desc:'La principal galería comercial de Osaka con calles cubiertas, tiendas insignia y boutiques locales.'},
@@ -303,7 +319,7 @@ function renderCards() {
 }
 
 function catColor(cat) {
-  const m = {historic:'#f5ede0',food:'#fef3e2',park:'#e8f5e9',shopping:'#e3f2fd',hotel:'#fce4ec',night:'#ede7f6'};
+  const m = {historic:'#f5ede0',food:'#fef3e2',park:'#e8f5e9',shopping:'#e3f2fd',hotel:'#fce4ec',night:'#ede7f6',otaku:'#e8f0fe'};
   return m[cat] || '#f5f5f5';
 }
 
