@@ -215,10 +215,43 @@ textarea.review-input {
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const PLACES = [
-  { id:'osaka_castle', cat:'historic', emoji:'🏯', lat:34.6873, lng:135.5262, rating:'4.8',
-    en:{name:'Osaka Castle', cat:'Historic Site', desc:'The iconic 16th-century castle rebuilt in 1931. Tower museum, moat and cherry blossom park.'},
-    es:{name:'Castillo de Osaka', cat:'Sitio Histórico', desc:'El icónico castillo del siglo XVI reconstruido en 1931. Museo, foso y parque de cerezos.'},
-    zh:{name:'大阪城', cat:'历史遗址', desc:'标志性的16世纪城堡，1931年重建。城堡博物馆、护城河和樱花公园。'}},
+
+    {
+  id: 'osaka_castle',
+  cat: 'historic',
+  emoji: '🏯',
+  photoUrl: ' https://res.klook.com/image/upload/fl_lossy.progressive,q_65/w_1080/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wvmlksk0aoarmzdxvxkw.jpg   ',
+  lat: 34.6873,
+  lng: 135.5262,
+  rating: '4.8',
+  en: {
+    name: 'Osaka Castle', 
+    cat: 'Historic Site', 
+    desc: 'The iconic 16th-century castle rebuilt in 1931. Tower museum, moat and cherry blossom park.',
+    mapLink: 'https://www.google.com/maps?q=34.6873,135.5262'  // 👈 enlace con coordenadas
+  },
+  es: {
+    name: 'Castillo de Osaka', 
+    cat: 'Sitio Histórico', 
+    desc: 'El icónico castillo del siglo XVI reconstruido en 1931. Museo, foso y parque de cerezos.',
+    mapLink: 'https://www.google.com/maps?q=34.6873,135.5262'  // 👈 mismo enlace
+  },
+  zh: {
+    name: '大阪城', 
+    cat: '历史遗址', 
+    desc: '标志性的16世纪城堡，1931年重建。城堡博物馆、护城河和樱花公园。',
+    mapLink: 'https://www.google.com/maps?q=34.6873,135.5262'  // 👈 mismo enlace
+  }
+},
+  
+     { id:'templo-tenoji', cat:'historic', emoji:'⛩️', lat:34.6547 , lng:135.5165 , rating:'4.8',
+    en:{name:'Templo tenoji', cat:'Historic Site', desc:' Restored Buddhist temple from the year 593 with a five-story pagoda, statues, and turtle ponds '},
+    es:{name:'Templo tenoji ', cat:'Sitio Histórico', desc:'Templo budista restaurado del año 593 con una pagoda de 5 niveles, estatuas y estanques con tortugas  '},
+    zh:{name:'大阪城', cat:'历史遗址', desc:'始建于593年、经过修复的佛教寺院，内有五重塔、佛像和放生龟池。  '}},
+
+
+
+
   { id:'dotonbori', cat:'food', emoji:'🦑', lat:34.6687, lng:135.5013, rating:'4.7',
     en:{name:'Dotonbori', cat:'Food & Nightlife', desc:'Osaka\'s most famous street food district with glittering signs, takoyaki and ramen.'},
     es:{name:'Dotonbori', cat:'Gastronomía y Vida Nocturna', desc:'El distrito gastronómico más famoso de Osaka con letreros brillantes, takoyaki y ramen.'},
@@ -296,14 +329,23 @@ function renderCards() {
     card.dataset.cat = p.cat;
     card.dataset.id = p.id;
     card.innerHTML = `
-      <div class="place-img" style="background:${catColor(p.cat)}">
-        <span style="font-size:3.5rem">${p.emoji}</span>
+      <div class="place-img" style="background:${catColor(p.cat)}; position:relative;">
+        ${p.photoUrl ? 
+          `<img src="${p.photoUrl}" alt="${d.name}" style="width:100%; height:100%; object-fit:cover;">` : 
+          `<span style="font-size:3.5rem">${p.emoji}</span>`
+        }
         <button class="place-fav ${isFav?'active':''}" onclick="toggleFav(event,'${p.id}')">${isFav?'❤️':'🤍'}</button>
       </div>
       <div class="place-body">
         <div class="place-cat">${d.cat}</div>
         <div class="place-name">${d.name}</div>
-        <div class="place-desc">${d.desc}</div>
+        <div class="place-desc">
+          ${d.desc}
+          <br>
+          <a href="${d.mapLink}" target="_blank" style="display:inline-block; margin-top:8px; color:var(--red); text-decoration:underline; font-size:0.75rem;">
+            📍 ${l === 'en' ? 'View on Google Maps' : l === 'es' ? 'Ver en Google Maps' : '在谷歌地图中查看'}
+          </a>
+        </div>
         <div class="place-meta">
           <span class="place-rating">★ ${p.rating}</span>
           <button class="place-review-btn" onclick="openReviews('${p.id}','${d.name}')">Reviews</button>
@@ -431,3 +473,4 @@ window.setLang = function(l) {
 };
 </script>
 {% endblock %}
++
