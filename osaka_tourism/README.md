@@ -1,3 +1,8 @@
+# Osaka explorer
+#### Video Demo:  https://youtu.be/6QRwVJq82mY
+#### Description: It’s a website for people who want to come visit Osaka, the best city in Japan! It shows all the beautiful things about this city, from its food and culture to, of course, its otaku scene. You can also find hotels and shopping places. It has a registration system where users can share and read comments about their impressions of the city, as well as a GPS map for better navigation. Everything is available in Spanish, English, and Chinese.
+
+
 # 🏯 Osaka Explorer – Tourist Web App
 
 A full-featured tourism web application for visitors to Osaka, Japan.  
@@ -97,5 +102,5 @@ All place names, descriptions, UI labels and navigation translate in real-time.
 - **Backend**: Python 3 + Flask
 - **Database**: SQLite (via Python's built-in `sqlite3`)
 - **Frontend**: HTML5 + CSS3 + Vanilla JavaScript
-- **Map**: Leaflet.js + OpenStreetMap (free, no API key needed)
+- **Map**: Leaflet.js + OpenStreetMap (free, no API key needed) + google maps
 - **Fonts**: Google Fonts – Shippori Mincho + Noto Sans JP + Noto Serif JP
